@@ -3,7 +3,7 @@ import Chart from "./components/Chart";
 import axios from "axios";
 import moment from "moment";
 import randomColor from "randomcolor";
-import Table from "react-bootstrap/table";
+import Table from "react-bootstrap/Table";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default class App extends Component {
