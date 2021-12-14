@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Chart from "chart.js/auto";
 
-export default class LineChart extends Component {
+export default class MyChart extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,6 +17,11 @@ export default class LineChart extends Component {
     new Chart(ctx, {
       type: this.state.type,
       data: this.state.data,
+      options: {
+        layout: {
+          padding: 20,
+        },
+      },
     });
   }
   render() {

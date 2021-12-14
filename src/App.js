@@ -1,56 +1,20 @@
 import React, { Component } from "react";
-import Chart from "./components/Chart";
 import axios from "axios";
 import moment from "moment";
 import randomColor from "randomcolor";
-import Table from "react-bootstrap/Table";
+import { Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import CardsChart from "./components/CardsChart";
+import TableData from "./components/TableData";
+import Navbars from "./components/Layout/Navbar";
+import "./App.css";
+import CardsMenu from "./components/CardsMenu";
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: {
-        labels: [
-          "Sunday",
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-        ],
-        datasets: [
-          {
-            data: [86, 114, 106, 106, 107, 111, 133],
-            label: "Total",
-            borderColor: "#3e95cd",
-            backgroundColor: "#7bb6dd",
-            fill: false,
-          },
-          {
-            data: [70, 90, 44, 60, 83, 90, 100],
-            label: "Accepted",
-            borderColor: "#3cba9f",
-            backgroundColor: "#71d1bd",
-            fill: false,
-          },
-          {
-            data: [10, 21, 60, 44, 17, 21, 17],
-            label: "Pending",
-            borderColor: "#ffa500",
-            backgroundColor: "#ffc04d",
-            fill: false,
-          },
-          {
-            data: [6, 3, 2, 2, 7, 0, 16],
-            label: "Rejected",
-            borderColor: "#c45850",
-            backgroundColor: "#d78f89",
-            fill: false,
-          },
-        ],
-      },
+      currentGraph: 1,
       dataFromApi: {
         labels: [],
         datasets: [
@@ -60,9 +24,54 @@ export default class App extends Component {
           },
         ],
       },
+      dataCurrents: {
+        labels: [],
+        datasets: [
+          {
+            data: [1, 2, 3],
+            label: "Total",
+          },
+        ],
+      },
+      dataVoltages: {
+        labels: [],
+        datasets: [
+          {
+            data: [1, 2, 3],
+            label: "Total",
+          },
+        ],
+      },
+      dataMoisture: {
+        labels: [],
+        datasets: [
+          {
+            data: [1, 2, 3],
+            label: "Total",
+          },
+        ],
+      },
+      dataRelays: {
+        labels: [],
+        datasets: [
+          {
+            data: [1, 2, 3],
+            label: "Total",
+          },
+        ],
+      },
+
       dataTest: [],
     };
   }
+
+  setCurrentGraph = (val) => {
+    this.setState({
+      currentGraph: val,
+    });
+    console.log("called set");
+    console.log("currentgraph : ", this.state.currentGraph);
+  };
   componentDidMount() {
     axios.get("https://testexpressjsiot.herokuapp.com").then((res) => {
       const dataApi = res.data;
@@ -82,7 +91,7 @@ export default class App extends Component {
 
       this.setState({
         dataTest: dataApi,
-        dataFromApi: {
+        dataCurrents: {
           labels: labelsData,
           datasets: [
             {
@@ -91,20 +100,34 @@ export default class App extends Component {
               borderColor: randomColor(),
               backgroundColor: randomColor(),
             },
+          ],
+        },
+        dataVoltages: {
+          labels: labelsData,
+          datasets: [
             {
               data: voltageData,
               label: "Voltage",
               borderColor: randomColor(),
               backgroundColor: randomColor(),
-              fill: false,
             },
+          ],
+        },
+        dataMoisture: {
+          labels: labelsData,
+          datasets: [
             {
               data: moistData,
-              label: "Moisture",
+              label: "Voltage",
               borderColor: randomColor(),
               backgroundColor: randomColor(),
-              fill: false,
+              color: "#fff",
             },
+          ],
+        },
+        dataRelays: {
+          labels: labelsData,
+          datasets: [
             {
               data: relayData,
               label: "Relay",
@@ -115,52 +138,41 @@ export default class App extends Component {
           ],
         },
       });
-      console.log(this.state.dataFromApi);
+      console.log(this.state.dataTest);
     });
   }
   render() {
     return (
-      <div>
-        <Chart
-          key={Math.random()}
-          data={this.state.dataFromApi}
-          type="line"
-          redraw={true}
-        />
-        {/* <Chart data={this.state.data} type="line" /> */}
-        {/* <ul>
-          {this.state.dataTest.map((person) => (
-            <li>{person.current}</li>
-          ))}
-          
-        </ul> */}
-        <Table striped bordered hover variant="dark">
-          <thead>
-            <tr key={Math.random()}>
-              <th>Time</th>
-              <th>Device Name</th>
-              <th>Current</th>
-              <th>Voltage</th>
-              <th>Moisture</th>
-              <th>Relay</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.dataTest.map((data) => {
-              return (
-                <tr key={Math.random()}>
-                  <td>{moment(data.postDate).endOf("day").fromNow()}</td>
-                  <td>{data.name}</td>
-                  <td>{data.current}</td>
-                  <td>{data.voltage}</td>
-                  <td>{data.moisture}</td>
-                  <td>{data.relay}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
-      </div>
+      <>
+        <div className="appWrapper">
+          <Navbars />
+          <Container>
+            <br />
+            <br />
+            <br />
+            <br />
+            <h3 className="neonText">Data Hidroponik</h3>
+            <CardsMenu
+              handleCurrentGraph={(val) => {
+                this.setCurrentGraph(val);
+              }}
+            />
+            <div className="wrapper-content">
+              <h4 className="title-content">Graphic Representasion</h4>
+              <CardsChart
+                key={Math.random()}
+                dataCurrents={this.state.dataCurrents}
+                dataVoltages={this.state.dataVoltages}
+                dataMoisture={this.state.dataMoisture}
+                dataRelays={this.state.dataRelays}
+                currentGraph={this.state.currentGraph}
+              />
+              <h4 className="title-content">Table Representasion</h4>
+              <TableData key={Math.random()} dataTable={this.state.dataTest} />
+            </div>
+          </Container>
+        </div>
+      </>
     );
   }
 }
