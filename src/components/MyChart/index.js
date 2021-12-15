@@ -13,6 +13,9 @@ export default class MyChart extends Component {
   chartRef = React.createRef();
 
   componentDidMount() {
+    Chart.defaults.backgroundColor = "#09FBD3";
+    Chart.defaults.borderColor = "rgba(255, 255, 255, 0.33)";
+    Chart.defaults.color = "rgba(255, 255, 255, 0.7)";
     const ctx = this.chartRef.current.getContext("2d");
     new Chart(ctx, {
       type: this.state.type,
@@ -20,6 +23,16 @@ export default class MyChart extends Component {
       options: {
         layout: {
           padding: 20,
+        },
+        plugins: {
+          legend: {
+            labels: {
+              // This more specific font property overrides the global property
+              font: {
+                size: 18,
+              },
+            },
+          },
         },
       },
     });

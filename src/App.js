@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
 import moment from "moment";
-import randomColor from "randomcolor";
 import { Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CardsChart from "./components/CardsChart";
@@ -69,8 +68,6 @@ export default class App extends Component {
     this.setState({
       currentGraph: val,
     });
-    console.log("called set");
-    console.log("currentgraph : ", this.state.currentGraph);
   };
   componentDidMount() {
     axios.get("https://testexpressjsiot.herokuapp.com").then((res) => {
@@ -87,6 +84,7 @@ export default class App extends Component {
         voltageData.push(data.voltage);
         moistData.push(data.moist);
         relayData.push(data.relay);
+        return true;
       });
 
       this.setState({
@@ -97,8 +95,6 @@ export default class App extends Component {
             {
               data: currentData,
               label: "Current",
-              borderColor: randomColor(),
-              backgroundColor: randomColor(),
             },
           ],
         },
@@ -108,8 +104,7 @@ export default class App extends Component {
             {
               data: voltageData,
               label: "Voltage",
-              borderColor: randomColor(),
-              backgroundColor: randomColor(),
+              tension: 0.5,
             },
           ],
         },
@@ -118,10 +113,7 @@ export default class App extends Component {
           datasets: [
             {
               data: moistData,
-              label: "Voltage",
-              borderColor: randomColor(),
-              backgroundColor: randomColor(),
-              color: "#fff",
+              label: "Moisture",
             },
           ],
         },
@@ -131,14 +123,10 @@ export default class App extends Component {
             {
               data: relayData,
               label: "Relay",
-              borderColor: randomColor(),
-              backgroundColor: randomColor(),
-              fill: false,
             },
           ],
         },
       });
-      console.log(this.state.dataTest);
     });
   }
   render() {
@@ -151,7 +139,7 @@ export default class App extends Component {
             <br />
             <br />
             <br />
-            <h3 className="neonText">Data Hidroponik</h3>
+            <h3 className="neonText">Monitoring Hidroponik</h3>
             <CardsMenu
               handleCurrentGraph={(val) => {
                 this.setCurrentGraph(val);

@@ -30,12 +30,11 @@ export default class CardsChart extends Component {
     if (this.state.currentGraph === 4) {
       dataSent = this.state.dataRelays;
     }
-    console.log(dataSent);
     return (
       <div>
         <div className="cardChart">
           <Row className="justify-content-center">
-            <Col md={9}>
+            <Col md={12}>
               <LineChart
                 key={Math.random()}
                 data={dataSent}
@@ -43,40 +42,6 @@ export default class CardsChart extends Component {
                 redraw={true}
               />
             </Col>
-            {/* <Col md={6}>
-              <LineChart
-                key={Math.random()}
-                data={this.state.dataCurrents}
-                type="line"
-                redraw={true}
-              />
-            </Col>
-            <Col md={6}>
-              <LineChart
-                key={Math.random()}
-                data={this.state.dataVoltages}
-                type="line"
-                redraw={true}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={6}>
-              <LineChart
-                key={Math.random()}
-                data={this.state.dataMoisture}
-                type="line"
-                redraw={true}
-              />
-            </Col>
-            <Col md={6}>
-              <LineChart
-                key={Math.random()}
-                data={this.state.dataRelays}
-                type="line"
-                redraw={true}
-              />
-            </Col> */}
           </Row>
         </div>
       </div>

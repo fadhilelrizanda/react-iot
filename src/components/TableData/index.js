@@ -9,7 +9,6 @@ export default class TableData extends Component {
     this.state = {
       dataTable: props.dataTable,
     };
-    console.log("data Table : ", this.state.dataTable);
   }
   render() {
     return (

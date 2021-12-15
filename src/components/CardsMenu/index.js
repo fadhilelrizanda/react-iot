@@ -18,7 +18,6 @@ export default class CardsMenu extends Component {
       },
       () => {
         this.props.handleCurrentGraph(this.state.cardState);
-        console.log("cardstate:", this.state.cardState);
       }
     );
   };
